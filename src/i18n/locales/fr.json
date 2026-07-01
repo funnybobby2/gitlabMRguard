@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "prophecies":      "PROPHÉTIES",
+    "coven":           "SABBAT",
+    "darkOmens":       "MAUVAIS PRÉSAGES",
+    "archives":        "ARCHIVES",
+    "prophecies_full": "PROPHÉTIES DU MOIS",
+    "coven_full":      "MEMBRES DU SABBAT",
+    "darkOmens_full":  "PRÉSAGES DÉTECTÉS",
+    "archives_full":   "ARCHIVES RITUELLES",
+    "settings_full":   "CONFIGURATION"
+  },
+  "sidebar": {
+    "tagline":     "GIT DE DIVINATION",
+    "invokeMerge": "INVOQUER LA FUSION",
+    "settings":    "PARAMÈTRES",
+    "logout":      "DÉCONNEXION",
+    "theme":       "THÈME",
+    "themeDark":   "Sombre",
+    "themeLight":  "Clair"
+  },
+  "topnav": {
+    "searchPlaceholder": "CHERCHER DANS LE VIDE..."
+  },
+  "footer": {
+    "text": "© 1337-2026. Toutes incantations réservées."
+  },
+  "prophecyBanner": {
+    "mergeSuccess":    "Succès de Fusion",
+    "alignment":       "Alignement Céleste",
+    "summonReviewers": "Invoquer les Reviewers",
+    "viewScrolls":     "Voir les Parchemins de MR Actifs",
+    "tiers": {
+      "danger":  {
+        "label":       "Défavorable",
+        "description": "Les astres sont en opposition. Les forces du chaos perturbent l'intégration des incantations — de nombreux parchemins de MR sont rejetés, corrompus ou perdus dans le néant. Seule une intervention rituelle urgente peut renverser ce sombre présage."
+      },
+      "warning": {
+        "label":       "Médiocre",
+        "description": "Les constellations sont instables. Certaines incantations parviennent à rejoindre le Parchemin MAIN, mais les turbulences cosmiques ralentissent leur passage. Procédez avec prudence et purifiez chaque sort avant soumission."
+      },
+      "info":    {
+        "label":       "Favorable",
+        "description": "Les alignements célestes laissent présager une période propice à l'intégration. La plupart des incantations s'intègrent avec succès dans le Parchemin MAIN, bien que trois étoiles sombres planent dans les avertissements ci-dessous."
+      },
+      "success": {
+        "label":       "Optimal",
+        "description": "Les étoiles s'alignent parfaitement. Le flux des incantations coule avec une fluidité remarquable vers le Parchemin MAIN. L'heure est aux grandes fusions — les gardiens du code sont en harmonie et les présages ne pourraient être plus favorables."
+      }
+    }
+  },
+  "divineWarnings": {
+    "title":        "Avertissements Divins",
+    "linesAdded":   "sortilèges",
+    "linesRemoved": "purifications",
+    "exorciseOne":  "Exorciser"
+  },
+  "warningItem": {
+    "abandoned":    "Dérive dans le néant depuis {{moons}} lune(s) sans révision",
+    "unsanctified": "Contient des incantations inédites sans approbation d'un maître",
+    "chaos":        "A démesurément grossi (+{{count}} lignes) pour une intégration sûre"
+  },
+  "highCouncil": {
+    "title":    "Le Haut Conseil",
+    "subtitle": "Les gardiens mystiques qui veillent sur l'architecture sacrée.",
+    "roles": {
+      "architect":  "L'ARCHITECTE",
+      "gatekeeper": "LE GARDIEN",
+      "scholar":    "L'ÉRUDIT",
+      "herald":     "LE HÉRAUT"
+    },
+    "titles": {
+      "highAuthor":      "GRAND AUTEUR",
+      "grandInquisitor": "GRAND INQUISITEUR",
+      "sageOfScript":    "SAGE DU SCRIPT",
+      "sealBearer":      "PORTEUR DU SCEAU"
+    },
+    "stats": {
+      "summons":   "INVOCATIONS",
+      "aura":      "AURA",
+      "visions":   "VISIONS",
+      "rigour":    "RIGUEUR",
+      "commits":   "COMMITS",
+      "scrolls":   "PARCHEMINS",
+      "approvals": "APPROBATIONS",
+      "trust":     "CONFIANCE"
+    }
+  },
+  "linesStatCard": {
+    "added":   { "label": "Sortilèges invoqués",    "subtitle": "ce mois-ci, toutes MRs" },
+    "deleted": { "label": "Purifications effectuées", "subtitle": "ce mois-ci, toutes MRs" }
+  },
+  "temporalVisions": {
+    "title":              "Visions Temporelles",
+    "timeToFirstReview":  "Temps avant première revue",
+    "timeToMerge":        "Temps jusqu'au merge"
+  },
+  "settings": {
+    "gitlab": {
+      "title":                  "Connexion GitLab",
+      "subtitle":               "Renseignez vos identifiants pour invoquer les données de votre projet.",
+      "baseUrl":                "URL de l'instance",
+      "baseUrlPlaceholder":     "https://gitlab.exemple.com",
+      "token":                  "Personal Access Token",
+      "tokenHint":              "Droits requis : read_api",
+      "projectPath":            "Chemin du projet",
+      "projectPathPlaceholder": "groupe/mon-projet",
+      "connect":                "SE CONNECTER",
+      "connecting":             "CONNEXION...",
+      "connected":              "Connecté · {{name}}"
+    }
+  },
+  "prophecies": {
+    "totalMRs":            "Total MRs",
+    "totalMRs_sub":        "flux lunaire en hausse",
+    "merged":              "Fusionnées",
+    "merged_sub":          "Alignement des astres",
+    "pending":             "En attente",
+    "pending_sub":         "Sans doute maudites",
+    "closed":              "Fermées",
+    "closed_sub":          "En cours de réincarnation ?"
+  }
+}

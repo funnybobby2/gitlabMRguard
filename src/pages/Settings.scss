@@ -1,0 +1,120 @@
+.settings-page {
+    max-width: 560px;
+}
+
+.settings-section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    &__title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #e6b428;
+        letter-spacing: 0.02em;
+    }
+
+    &__subtitle {
+        font-size: 12px;
+        color: var(--text-secondary);
+        letter-spacing: 0.02em;
+        line-height: 1.6;
+        margin-top: -16px;
+    }
+}
+
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    &__field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    &__label {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+    }
+
+    &__input {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px 14px;
+        color: var(--text-primary);
+        font-size: 13px;
+        width: 100%;
+        transition: border-color 0.15s;
+        outline: none;
+
+        &::placeholder {
+            color: var(--text-muted);
+        }
+
+        &:focus {
+            border-color: var(--accent-blue);
+        }
+    }
+
+    &__hint {
+        font-size: 10px;
+        color: var(--text-muted);
+        letter-spacing: 0.02em;
+    }
+
+    &__submit {
+        align-self: flex-start;
+        padding: 10px 24px;
+        background: var(--accent-blue);
+        border: none;
+        border-radius: 8px;
+        color: #fff;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: opacity 0.15s, background 0.15s;
+
+        &:hover:not(:disabled) {
+            background: #4a8be5;
+        }
+
+        &:disabled {
+            opacity: 0.4;
+            cursor: default;
+        }
+    }
+}
+
+.settings-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+
+    &--success {
+        color: var(--positive);
+        background: rgba(0, 168, 112, 0.1);
+        border: 1px solid rgba(0, 168, 112, 0.25);
+    }
+
+    &--error {
+        color: var(--negative);
+        background: rgba(232, 64, 96, 0.1);
+        border: 1px solid rgba(232, 64, 96, 0.25);
+    }
+}

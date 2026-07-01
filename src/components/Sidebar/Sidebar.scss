@@ -1,5 +1,5 @@
 .sidebar {
-  width: 178px;
+  width: 185px;
   flex-shrink: 0;
   background: var(--bg-sidebar);
   border-right: 1px solid var(--border-subtle);
@@ -138,5 +138,120 @@
   &:hover {
     color: var(--text-primary);
     background: var(--bg-nav-active);
+  }
+}
+
+.settings-wrapper {
+  position: relative;
+}
+
+.settings-popover {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 140px;
+
+  &__label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--text-secondary);
+  }
+
+  &__langs {
+    display: flex;
+    gap: 6px;
+  }
+
+  &__themes {
+    display: flex;
+    gap: 6px;
+  }
+
+  &__divider {
+    height: 1px;
+    background: var(--border-subtle);
+    margin: 2px 0;
+  }
+
+  &__gitlab-link {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 2px 0;
+    text-align: left;
+    transition: color 0.15s;
+
+    &:hover {
+      color: var(--accent-blue);
+    }
+  }
+}
+
+.lang-option {
+  flex: 1;
+  padding: 5px 0;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--text-secondary);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+
+  &:hover {
+    color: var(--text-primary);
+    border-color: var(--border);
+    background: var(--bg-nav-active);
+  }
+
+  &--active {
+    color: var(--accent-blue);
+    border-color: var(--accent-blue);
+    background: rgba(58, 123, 213, 0.1);
+  }
+}
+
+.theme-option {
+  flex: 1;
+  padding: 5px 6px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--text-secondary);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+
+  &:hover {
+    color: var(--text-primary);
+    border-color: var(--border);
+    background: var(--bg-nav-active);
+  }
+
+  &--active {
+    color: var(--accent-blue);
+    border-color: var(--accent-blue);
+    background: rgba(58, 123, 213, 0.1);
   }
 }

@@ -1,75 +1,25 @@
 .topnav {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
-  padding: 20px 32px 0;
+  padding: 0 32px;
+  height: 56px;
   border-bottom: 1px solid var(--border-subtle);
   flex-shrink: 0;
-  gap: 24px;
 
-  &-left {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  &-tabs {
-    display: flex;
-    gap: 0;
-  }
-
-  &-tab {
-    padding: 8px 18px;
-    background: transparent;
-    border: none;
-    border-bottom: 2px solid transparent;
-    color: var(--text-secondary);
-    font-size: 11px;
+  &-title {
+    font-size: 13px;
     font-weight: 600;
-    letter-spacing: 0.1em;
-    cursor: pointer;
-    transition: color 0.15s, border-color 0.15s;
-    margin-bottom: -1px;
-
-    &:hover {
-      color: var(--text-primary);
-    }
-
-    &--active {
-      color: var(--text-primary);
-      border-bottom-color: var(--text-primary);
-    }
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-primary);
   }
 
-  &-right {
+  &-actions {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding-bottom: 10px;
-    flex-shrink: 0;
   }
-}
-
-.page-title-block {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin-bottom: 16px;
-}
-
-.page-title {
-  font-size: 22px;
-  font-weight: 300;
-  letter-spacing: 0.02em;
-  color: var(--text-primary);
-  line-height: 1.2;
-}
-
-.page-subtitle {
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  color: var(--text-secondary);
-  text-transform: uppercase;
 }
 
 .search-box {
@@ -81,6 +31,8 @@
   border-radius: 6px;
   padding: 6px 12px;
   color: var(--text-secondary);
+
+  .search-icon { font-size: 12px; }
 }
 
 .search-input {
@@ -90,7 +42,7 @@
   color: var(--text-primary);
   font-size: 11px;
   letter-spacing: 0.08em;
-  width: 140px;
+  width: 160px;
 
   &::placeholder {
     color: var(--text-secondary);
@@ -114,5 +66,21 @@
   &:hover {
     color: var(--text-primary);
     border-color: var(--border);
+  }
+
+  &--account {
+    position: relative;
+  }
+
+  &--connected::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--positive);
+    border: 1px solid var(--bg-root);
   }
 }

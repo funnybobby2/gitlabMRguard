@@ -38,20 +38,20 @@
 /* -------- lids -------- */
 .lid { fill: #111; will-change: transform; }
 
+/* position de repos permanente : l'animation l'override pendant le blink, elle reprend la main après */
+.lid-top    { transform: translateY(var(--lid-top-rest, 0px)); }
+.lid-bottom { transform: translateY(var(--lid-bottom-rest, 0px)); }
+
 .eye.blinking .lid-top    { animation: unified-blink-top 4.5s ease-in-out; }
 .eye.blinking .lid-bottom { animation: unified-blink-bottom 4.5s ease-in-out; }
 
-/* upperEyeLid actions */
-.eye.lowerUpperEyelid { --lid-top-rest: 14px; }
-.eye.lowerUpperEyelid-more { --lid-top-rest: 22px; }
-
-/* lowerEyeLid actions */
-.eye.lowersLowerEyelid { --lid-bottom-rest: -4px; }
-.eye.lowersLowerEyelid-more { --lid-bottom-rest: -22px; }
+/* EyeLid actions */
+.eye.lowerUpperEyelid { --lid-top-rest: 22px; }
+.eye.lowersLowerEyelid { --lid-bottom-rest: -22px; }
 
 .eye.narrowed { --lid-top-rest: 22px; --lid-bottom-rest: -22px; }
 
-.eye.enervous  { transform: translateY(4px) rotate(10deg); --lid-top-rest: 14px; }
+.eye.enervous  { transform: translateY(4px) rotate(10deg); --lid-top-rest: 22px; }
 .eye.surprised { transform: rotate(-14deg) skewX(8deg) scale(0.95); --lid-top-rest: 0px; --lid-bottom-rest: 0px; }
 
 /* -------- pupils & iris -------- */
@@ -68,11 +68,48 @@
 .eye.full-pupil .pupil { transform: scale(1.65); }
 /* Nervous action*/
 .eye.wrinkled-pupil .pupil { animation: suspicious-pupil-blink 0.5s infinite ease-in-out; }
+
 /* Sharingan action*/
 .tomoe-group { opacity: 0; transform-origin: 110px 60px; transition: opacity 0.3s ease; }
 .eye.sharingan    { filter: drop-shadow(0 0 2px rgba(255,0,0,0.8)) drop-shadow(0 0 5px rgba(255,0,0,0.6)); }
 .eye.sharingan .iris-ring { fill: #cc0000; }
 .eye.sharingan .tomoe-group { opacity: 1; animation: spin 2.5s linear infinite; }
+
+/* ------------ Hypnose effect animations ------------ */
+.eye.hypnose .iris-ring { fill: #6a0dad !important; } /* Iris violet mystique */
+.eye.hypnose .iris { animation: hypnotic-vortex 1s linear infinite; } /* Rotation globale de l'iris */
+.eye.hypnose .pupil { animation: hypnotic-pulsation 1.5s infinite ease-in-out alternate; } /* Pupille qui pulse */
+.eye.hypnose { filter: drop-shadow(0 0 6px rgba(150,0,255,0.9)) drop-shadow(0 0 15px rgba(100,0,200,0.5)); }
+
+/* -------- cyberpunk -------- */
+.scanlines {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+.eye.cyberpunk .scanlines { opacity: 0.25; }
+.eye.cyberpunk .iris-ring { fill: #00ffcc !important; stroke: #003322; }
+.eye.cyberpunk .pupil { fill: #003322; }
+.eye.cyberpunk .eye-shape { fill: #051a15; }
+.eye.cyberpunk .eye-outline { stroke: #00ffcc; }
+.eye.cyberpunk .lid { fill: #020b08; }
+.eye.cyberpunk .shine { opacity: 0.2; }
+
+.eye.cyberpunk {
+    animation: cyber-glitch 1.5s infinite steps(1);
+    filter: drop-shadow(0 0 8px rgba(0, 255, 210, 0.8));
+}
+
+/* ------------ Reptile effect animations ------------ */
+.eye.predator .iris-ring { fill: #d4af37 !important; stroke: #2b2300; } /* Jaune ambré sauvage */
+.eye.predator .pupil { 
+    animation: reptile-slit 0.8s infinite ease-in-out alternate; /* Écrasement en fente verticale */
+}
+.eye.predator .shine { transform: scaleX(0.6) translateX(10px); opacity: 0.7; } /* Ajuste le reflet à la fente */
+.eye.predator { filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.6)); }
+
+/* -------- Negative effect -------- */
+.eye.negative { filter: invert(1) hue-rotate(180deg) drop-shadow(0 0 5px #fff); }
 
 
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -86,3 +123,25 @@
 }
 
 @keyframes suspicious-pupil-blink { 0%, 100% { transform: scaleX(1) scaleY(1); } 50% { transform: scaleX(0.7) scaleY(1.05); } }
+
+@keyframes hypnotic-vortex {
+    from { transform: translate(var(--iris-x, 0px), var(--iris-y, 0px)) rotate(0deg); }
+    to { transform: translate(var(--iris-x, 0px), var(--iris-y, 0px)) rotate(360deg); }
+}
+
+@keyframes hypnotic-pulsation {
+    0% { transform: scale(0.8); }
+    100% { transform: scale(1.8); }
+}
+
+@keyframes cyber-glitch {
+    0%, 95%, 100% { transform: skewX(0deg) scale(1); filter: drop-shadow(0 0 8px rgba(0, 255, 210, 0.8)); }
+    91% { transform: skewX(20deg) scaleY(0.9); filter: drop-shadow(-5px 0 red) drop-shadow(5px 0 blue); }
+    93% { transform: skewX(-15deg) scaleX(1.1); }
+}
+
+@keyframes reptile-slit {
+    0% { transform: scaleX(0.15) scaleY(1.35); }
+    100% { transform: scaleX(0.22) scaleY(1.25); }
+}
+

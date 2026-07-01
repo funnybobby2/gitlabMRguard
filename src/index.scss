@@ -20,6 +20,28 @@
   --badge-aligned-bg: rgba(106, 122, 154, 0.12);
 }
 
+[data-theme="light"] {
+  --bg-root: #edf0f7;
+  --bg-sidebar: #e3e7f2;
+  --bg-card: #f8f9fd;
+  --bg-card-deep: #eef1f8;
+  --bg-nav-active: #dce1f0;
+  --border: #c8d0e4;
+  --border-subtle: #d8dee8;
+  --text-primary: #0e1320;
+  --text-secondary: #5a6a8a;
+  --text-muted: #9aacca;
+  --accent-cyan: #0088b8;
+  --accent-teal: #00a870;
+  --accent-blue: #3a7bd5;
+  --positive: #00a870;
+  --negative: #e84060;
+  --badge-ascending-text: #00a870;
+  --badge-ascending-bg: rgba(0, 168, 112, 0.15);
+  --badge-aligned-text: #5a6a8a;
+  --badge-aligned-bg: rgba(90, 106, 138, 0.12);
+}
+
 * {
   margin: 0;
   padding: 0;

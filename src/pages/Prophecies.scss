@@ -1,0 +1,34 @@
+.page--prophecies {
+    display: flex;
+    flex-direction: column;
+}
+
+.prophecies-main {
+    display: flex;
+    gap: 20px;
+    align-items: stretch;
+
+    @media (max-width: 620px) {
+        flex-direction: column;
+    }
+}
+
+.prophecies-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-width: 0;
+}
+
+.prophecies-stats-wrapper, .prophecies-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.prophecies-lines {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}

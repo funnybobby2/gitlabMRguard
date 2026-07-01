@@ -1,0 +1,106 @@
+.warning-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px 12px 12px 14px;
+    border-radius: 8px;
+    background: var(--bg-sidebar);
+    border-left: 3px solid transparent;
+    transition: background 0.2s ease;
+
+    &--abandoned {
+        border-left-color: #e84060;
+        .warning-item__icon { color: #e84060; }
+        &:hover { background: rgba(232, 64, 96, 0.07); }
+    }
+    &--unsanctified {
+        border-left-color: #c04090;
+        .warning-item__icon { color: #c04090; }
+        &:hover { background: rgba(192, 64, 144, 0.07); }
+    }
+    &--chaos {
+        border-left-color: #e6b428;
+        .warning-item__icon { color: #e6b428; }
+        &:hover { background: rgba(230, 180, 40, 0.07); }
+    }
+
+    &__icon {
+        flex-shrink: 0;
+        padding-top: 3px;
+        font-size: 13px;
+    }
+
+    &__body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-width: 0;
+    }
+
+    &__id {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        color: var(--text-primary);
+    }
+
+    &__desc {
+        font-size: 11px;
+        color: var(--text-secondary);
+        line-height: 1.5;
+    }
+
+    &__meta {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 2px;
+        color: var(--text-secondary);
+        opacity: 0.7;
+        font-size: 10px;
+    }
+
+    &__author { margin-right: 6px; letter-spacing: 0.04em; }
+    &__time   { letter-spacing: 0.04em; }
+
+    &__diff {
+        display: flex;
+        gap: 8px;
+        margin-top: 2px;
+        font-size: 10px;
+        font-weight: 600;
+        font-family: monospace;
+    }
+
+    &__diff-added   { color: #3fb950; }
+    &__diff-removed { color: #e84060; }
+
+    &__exorcise {
+        flex-shrink: 0;
+        align-self: center;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        background: transparent;
+        border: 1px solid transparent;
+        border-radius: 6px;
+        color: var(--text-secondary);
+        padding: 5px 8px;
+        cursor: pointer;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        white-space: nowrap;
+        text-decoration: none;
+        transition: color 0.15s, border-color 0.15s, background 0.15s;
+
+        svg { color: #FF9800; }
+
+        &:hover {
+            color: #e84060;
+            border-color: #e84060;
+            background: rgba(232, 64, 96, 0.08);
+            svg { color: #FF9800; }
+        }
+    }
+}

@@ -1,0 +1,184 @@
+.prophecy-banner {
+    --tier-color: #00c87a;
+    --tier-bg:    rgba(0, 200, 122, 0.12);
+
+    &--danger  { --tier-color: #e84060; --tier-bg: rgba(232,  64,  96, 0.12); }
+    &--warning { --tier-color: #e6b428; --tier-bg: rgba(230, 180,  40, 0.12); }
+    &--info    { --tier-color: #3a7bd5; --tier-bg: rgba( 58, 123, 213, 0.12); }
+    &--success { --tier-color: #00c87a; --tier-bg: rgba(  0, 200, 122, 0.12); }
+
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 36px;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+
+    &:hover {
+        transform: scale(1.01) translateY(-2px);
+        border-color: var(--text-secondary);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    }
+
+    &__circle-wrapper {
+        position: relative;
+        flex-shrink: 0;
+        width: 180px;
+        height: 180px;
+        animation: float 3.5s ease-in-out infinite;
+    }
+
+    &__circle {
+        width: 100%;
+        height: 100%;
+        transform: rotate(-90deg);
+    }
+
+    &__track {
+        fill: none;
+        stroke: var(--border);
+        stroke-width: 6;
+    }
+
+    &__progress {
+        fill: none;
+        stroke: var(--tier-color);
+        stroke-width: 6;
+        stroke-linecap: round;
+        transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                    stroke 0.3s ease;
+        filter: drop-shadow(0 0 6px color-mix(in srgb, var(--tier-color) 60%, transparent));
+    }
+
+    &__circle-label {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+    }
+
+    &__circle-text {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+    }
+
+    &__circle-value {
+        font-size: 36px;
+        font-weight: 300;
+        color: var(--tier-color);
+        letter-spacing: -0.02em;
+        line-height: 1;
+        transition: color 0.3s ease;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        flex: 1;
+        min-width: 0;
+    }
+
+    &__badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        width: fit-content;
+        transition: color 0.3s, background 0.3s;
+        background: var(--tier-bg);
+        color: var(--tier-color);
+    }
+
+    &__title {
+        font-size: 26px;
+        font-weight: 300;
+        color: var(--text-primary);
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+    }
+
+    &__description {
+        font-size: 12px;
+        line-height: 1.7;
+        color: var(--text-secondary);
+        max-width: 380px;
+    }
+
+    &__actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 4px;
+        flex-wrap: wrap;
+    }
+
+    &__btn {
+        padding: 9px 20px;
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        cursor: pointer;
+        transition: opacity 0.15s, transform 0.15s;
+
+        &:hover {
+            opacity: 0.85;
+            transform: translateY(-1px);
+        }
+
+        &--primary {
+            background: var(--accent-cyan);
+            color: var(--bg-root);
+            border: none;
+        }
+
+        &--secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+    }
+
+    @media (max-width: 1180px) {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 20px;
+        padding: 24px 20px;
+
+        &__circle-wrapper {
+            width: 120px;
+            height: 120px;
+            align-self: center;
+        }
+
+        &__circle-value { font-size: 24px; }
+        &__circle-text  { font-size: 9px; }
+
+        &__title { font-size: 18px; }
+
+        &__description { max-width: 100%; }
+
+        &__actions { flex-wrap: wrap; }
+
+        &__btn { flex: 1; text-align: center; }
+    }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-8px); }
+}

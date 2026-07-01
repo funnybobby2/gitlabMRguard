@@ -1,89 +1,63 @@
-import { useState } from 'react'
+import { useEffect } from 'react'
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faScroll, faUsers, faBoxArchive } from '@fortawesome/free-solid-svg-icons'
 import './App.scss'
 import Sidebar from './components/Sidebar/Sidebar'
 import TopNav from './components/TopNav/TopNav'
-import Dashboard from './components/Dashboard/Dashboard'
-
-const NAV_ITEMS = [
-  { id: 'almanac', label: 'ALMANAC', icon: <GridIcon /> },
-  { id: 'prophecies', label: 'PROPHECIES', icon: <GridIcon /> },
-  { id: 'coven', label: 'COVEN', icon: <PeopleIcon /> },
-  { id: 'dark-omens', label: 'DARK OMENS', icon: <WarningIcon /> },
-  { id: 'archives', label: 'ARCHIVES', icon: <ArchiveIcon /> },
-]
-
-const TOP_TABS = [
-  { id: 'repositories', label: 'REPOSITORIES' },
-  { id: 'organizations', label: 'ORGANIZATIONS' },
-  { id: 'fleet', label: 'FLEET' },
-]
+import Footer from './components/Footer/Footer'
+import Prophecies from './pages/Prophecies'
+import Coven from './pages/Coven'
+import Archives from './pages/Archives'
+import Settings from './pages/Settings'
+import { useAppDispatch, useAppSelector } from './store/hooks'
+import { triggerSuspicious, triggerCuriosity, setMode } from './store/eyeSlice'
+import { fetchProjectData } from './store/projectSlice'
+import { useRandomEyeEffect } from './hooks/useRandomEyeEffect'
+import { useTheme } from './hooks/useTheme'
 
 export default function App() {
-  const [activeNav, setActiveNav] = useState('almanac')
-  const [activeTab, setActiveTab] = useState('repositories')
+  const { t } = useTranslation()
+  const { pathname } = useLocation()
+  const dispatch = useAppDispatch()
+  const { theme, setTheme } = useTheme()
+  const config = useAppSelector(s => s.config)
+  const projectStatus = useAppSelector(s => s.project.status)
+  useRandomEyeEffect()
+
+  // Auto-fetch on load if config is stored
+  useEffect(() => {
+    if (config.baseUrl && config.token && config.projectPath && projectStatus === 'idle') {
+      dispatch(fetchProjectData(config))
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const NAV_ITEMS = [
+    { id: 'prophecies', path: '/prophecies', label: t('nav.prophecies'), fullLabel: t('nav.prophecies_full'), icon: <FontAwesomeIcon icon={faScroll} />,     onNavigate: () => dispatch(triggerSuspicious()) },
+    { id: 'coven',      path: '/coven',      label: t('nav.coven'),      fullLabel: t('nav.coven_full'),       icon: <FontAwesomeIcon icon={faUsers} />,      onNavigate: () => dispatch(triggerCuriosity()) },
+    { id: 'archives',   path: '/archives',   label: t('nav.archives'),   fullLabel: t('nav.archives_full'),    icon: <FontAwesomeIcon icon={faBoxArchive} />, onNavigate: () => dispatch(setMode({ mode: 'sharingan', value: true })) },
+  ]
+
+  const activeItem = NAV_ITEMS.find(n => pathname.startsWith(n.path))
+  const pageTitle = activeItem?.fullLabel ?? (pathname.startsWith('/settings') ? t('nav.settings_full') : '')
 
   return (
     <div className="app">
-      <Sidebar
-        appName="AETHER"
-        tagline="GIT DIVINATION"
-        navItems={NAV_ITEMS}
-        activeItem={activeNav}
-        onNavClick={setActiveNav}
-      />
+      <Sidebar appName="MR patrol" navItems={NAV_ITEMS} theme={theme} onThemeChange={setTheme} />
       <div className="main-wrapper">
-        <TopNav
-          pageTitle="Lunar Overview"
-          pageSubtitle=""
-          tabs={TOP_TABS}
-          activeTab={activeTab}
-          onTabClick={setActiveTab}
-        />
+        <TopNav title={pageTitle} />
         <main className="content-area">
-          <Dashboard />
+          <Routes>
+            <Route index element={<Navigate to="/prophecies" replace />} />
+            <Route path="/prophecies" element={<Prophecies />} />
+            <Route path="/coven"      element={<Coven />} />
+            <Route path="/archives"   element={<Archives />} />
+            <Route path="/settings"   element={<Settings />} />
+          </Routes>
         </main>
+        <Footer />
       </div>
     </div>
-  )
-}
-
-function GridIcon() {
-  return (
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <rect x="3" y="3" width="7" height="7" rx="1" />
-      <rect x="14" y="3" width="7" height="7" rx="1" />
-      <rect x="3" y="14" width="7" height="7" rx="1" />
-      <rect x="14" y="14" width="7" height="7" rx="1" />
-    </svg>
-  )
-}
-
-function PeopleIcon() {
-  return (
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
-      <circle cx="9" cy="7" r="4" />
-      <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
-    </svg>
-  )
-}
-
-function WarningIcon() {
-  return (
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
-      <line x1="12" y1="9" x2="12" y2="13" />
-      <line x1="12" y1="17" x2="12.01" y2="17" />
-    </svg>
-  )
-}
-
-function ArchiveIcon() {
-  return (
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <polyline points="21 8 21 21 3 21 3 8" />
-      <rect x="1" y="3" width="22" height="5" rx="1" />
-      <line x1="10" y1="12" x2="14" y2="12" />
-    </svg>
   )
 }

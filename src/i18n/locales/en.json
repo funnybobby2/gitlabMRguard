@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "prophecies":      "PROPHECIES",
+    "coven":           "COVEN",
+    "darkOmens":       "DARK OMENS",
+    "archives":        "ARCHIVES",
+    "prophecies_full": "PROPHECIES OF THE MONTH",
+    "coven_full":      "COVEN MEMBERS",
+    "darkOmens_full":  "DARK OMENS DETECTED",
+    "archives_full":   "RITUAL ARCHIVES",
+    "settings_full":   "CONFIGURATION"
+  },
+  "sidebar": {
+    "tagline":     "GIT DIVINATION",
+    "invokeMerge": "INVOKE MERGE",
+    "settings":    "SETTINGS",
+    "logout":      "LOGOUT",
+    "theme":       "THEME",
+    "themeDark":   "Dark",
+    "themeLight":  "Light"
+  },
+  "topnav": {
+    "searchPlaceholder": "SEARCH VOID..."
+  },
+  "footer": {
+    "text": "© 1337-2026. All incantations reserved."
+  },
+  "prophecyBanner": {
+    "mergeSuccess":    "Merge Success",
+    "alignment":       "Celestial Alignment",
+    "summonReviewers": "Summon Reviewers",
+    "viewScrolls":     "View Active MR Scrolls",
+    "tiers": {
+      "danger":  {
+        "label":       "Unfavorable",
+        "description": "The stars are in opposition. Forces of chaos disrupt the integration of incantations — many MR scrolls are rejected, corrupted or lost in the void. Only urgent ritual intervention can reverse this dark omen."
+      },
+      "warning": {
+        "label":       "Mediocre",
+        "description": "The constellations are unstable. Some incantations manage to reach the Main Scroll, but cosmic turbulence slows their passage. Proceed with caution and purify each spell before submission."
+      },
+      "info":    {
+        "label":       "Favorable",
+        "description": "The celestial alignments suggest a favorable period for integration. Most incantations are successfully merging into the Main Scroll, though three dark stars loom in the warnings below."
+      },
+      "success": {
+        "label":       "Optimal",
+        "description": "The stars align perfectly. The flow of incantations streams remarkably smoothly into the Main Scroll. The time for great merges is upon us — the code guardians are in harmony and the omens could not be more auspicious."
+      }
+    }
+  },
+  "divineWarnings": {
+    "title":        "Divine Warnings",
+    "linesAdded":   "incantations",
+    "linesRemoved": "purifications",
+    "exorciseOne":  "Exorcise"
+  },
+  "warningItem": {
+    "abandoned":    "Has been drifting in the void for {{moons}} moon(s) without review",
+    "unsanctified": "Contains previously unpublished incantations without a master approval",
+    "chaos":        "Has grown too large (+{{count}} lines) for safe integration"
+  },
+  "highCouncil": {
+    "title":    "The High Council",
+    "subtitle": "The mystical guardians who safeguard the sacred architecture.",
+    "roles": {
+      "architect":  "THE ARCHITECT",
+      "gatekeeper": "THE GATEKEEPER",
+      "scholar":    "THE SCHOLAR",
+      "herald":     "THE HERALD"
+    },
+    "titles": {
+      "highAuthor":      "HIGH AUTHOR",
+      "grandInquisitor": "GRAND INQUISITOR",
+      "sageOfScript":    "SAGE OF SCRIPT",
+      "sealBearer":      "SEAL BEARER"
+    },
+    "stats": {
+      "summons":   "SUMMONS",
+      "aura":      "AURA",
+      "visions":   "VISIONS",
+      "rigour":    "RIGOUR",
+      "commits":   "COMMITS",
+      "scrolls":   "SCROLLS",
+      "approvals": "APPROVALS",
+      "trust":     "TRUST"
+    }
+  },
+  "linesStatCard": {
+    "added":   { "label": "Incantations Invoked",   "subtitle": "this month, all MRs" },
+    "deleted": { "label": "Purifications Performed", "subtitle": "this month, all MRs" }
+  },
+  "temporalVisions": {
+    "title":             "Temporal Visions",
+    "timeToFirstReview": "Time to First Review",
+    "timeToMerge":       "Time to Merge"
+  },
+  "settings": {
+    "gitlab": {
+      "title":                  "GitLab Connection",
+      "subtitle":               "Enter your credentials to summon data from your project.",
+      "baseUrl":                "Instance URL",
+      "baseUrlPlaceholder":     "https://gitlab.example.com",
+      "token":                  "Personal Access Token",
+      "tokenHint":              "Required scope: read_api",
+      "projectPath":            "Project path",
+      "projectPathPlaceholder": "group/my-project",
+      "connect":                "CONNECT",
+      "connecting":             "CONNECTING...",
+      "connected":              "Connected · {{name}}"
+    }
+  },
+  "prophecies": {
+    "totalMRs":     "Total MRs",
+    "totalMRs_sub": "lunar flux rising",
+    "merged":       "Merged",
+    "merged_sub":   "Stars aligned",
+    "pending":      "Pending",
+    "pending_sub":  "Probably cursed",
+    "closed":       "Closed",
+    "closed_sub":   "Awaiting reincarnation?"
+  }
+}
