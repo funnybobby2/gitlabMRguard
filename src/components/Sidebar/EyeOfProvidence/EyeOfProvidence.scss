@@ -1,0 +1,88 @@
+
+.pyramide {
+    width: 100px;
+    height: 100px;
+    background: url('@assets/pyramide.png') center no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+/* --------  👁️ Eye container  --------*/
+.eye {
+    width: 50px;
+    overflow: visible;
+    cursor: pointer;
+    transition: filter 0.3s, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    will-change: transform, filter;
+
+    /* default values */
+    --lid-top-rest: 0px;
+    --lid-bottom-rest: 0px;
+}
+
+.eye-shape { fill: #fff; }
+.eye-outline { fill: none; stroke: #000; stroke-width: 6; }
+.shine { fill: #fff; opacity: 0.9; }
+
+/* --------  look at -------- */
+.eye.left { --iris-x: -32px !important; }
+.eye.right { --iris-x: 32px !important; }
+.eye.up   { --iris-y: -16px !important; }
+.eye.down    { --iris-y: 16px !important; }
+
+/* --------  eye rotation -------- */
+.eye.rotate-left { transform: rotate(-14deg) skewX(8deg) scale(0.95); }
+.eye.rotate-right  { transform: translateY(4px) rotate(10deg); }
+
+/* -------- lids -------- */
+.lid { fill: #111; will-change: transform; }
+
+.eye.blinking .lid-top    { animation: unified-blink-top 4.5s ease-in-out; }
+.eye.blinking .lid-bottom { animation: unified-blink-bottom 4.5s ease-in-out; }
+
+/* upperEyeLid actions */
+.eye.lowerUpperEyelid { --lid-top-rest: 14px; }
+.eye.lowerUpperEyelid-more { --lid-top-rest: 22px; }
+
+/* lowerEyeLid actions */
+.eye.lowersLowerEyelid { --lid-bottom-rest: -4px; }
+.eye.lowersLowerEyelid-more { --lid-bottom-rest: -22px; }
+
+.eye.narrowed { --lid-top-rest: 22px; --lid-bottom-rest: -22px; }
+
+.eye.enervous  { transform: translateY(4px) rotate(10deg); --lid-top-rest: 14px; }
+.eye.surprised { transform: rotate(-14deg) skewX(8deg) scale(0.95); --lid-top-rest: 0px; --lid-bottom-rest: 0px; }
+
+/* -------- pupils & iris -------- */
+.iris {
+    transform: translate(var(--iris-x, 0px), var(--iris-y, 0px));
+    transform-origin: 110px 60px;
+    transition: transform 0.15s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
+}
+.iris-ring { fill: #329760; stroke: #000; stroke-width: 6; transition: fill 0.4s ease; }
+.pupil { fill: #000; transform-origin: 110px 60px; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+/* Dilatation action*/
+.eye.full-pupil .pupil { transform: scale(1.65); }
+/* Nervous action*/
+.eye.wrinkled-pupil .pupil { animation: suspicious-pupil-blink 0.5s infinite ease-in-out; }
+/* Sharingan action*/
+.tomoe-group { opacity: 0; transform-origin: 110px 60px; transition: opacity 0.3s ease; }
+.eye.sharingan    { filter: drop-shadow(0 0 2px rgba(255,0,0,0.8)) drop-shadow(0 0 5px rgba(255,0,0,0.6)); }
+.eye.sharingan .iris-ring { fill: #cc0000; }
+.eye.sharingan .tomoe-group { opacity: 1; animation: spin 2.5s linear infinite; }
+
+
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes unified-blink-top { 
+    0%, 90%, 94%, 100% { transform: translateY(var(--lid-top-rest)); } 
+    92% { transform: translateY(42px); } 
+}
+@keyframes unified-blink-bottom { 
+    0%, 90%, 94%, 100% { transform: translateY(var(--lid-bottom-rest)); } 
+    92% { transform: translateY(-42px); } 
+}
+
+@keyframes suspicious-pupil-blink { 0%, 100% { transform: scaleX(1) scaleY(1); } 50% { transform: scaleX(0.7) scaleY(1.05); } }

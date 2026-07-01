@@ -1,0 +1,50 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  &-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  &-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    line-height: 1;
+  }
+
+  &-cycle {
+    font-size: 9.5px;
+    letter-spacing: 0.2em;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+  }
+
+  &-stats {
+    display: flex;
+    gap: 16px;
+  }
+
+  &-grid {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 16px;
+    align-items: start;
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.glyph {
+  display: inline;
+
+  &-0 { color: var(--accent-cyan); }
+  &-1 { color: var(--accent-teal); }
+  &-2 { color: #a0c8e8; }
+  &-3 { color: var(--text-primary); }
+}

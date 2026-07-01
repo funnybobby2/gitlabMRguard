@@ -1,0 +1,44 @@
+:root {
+  --bg-root: #07090f;
+  --bg-sidebar: #0a0d16;
+  --bg-card: #0e1320;
+  --bg-card-deep: #090c14;
+  --bg-nav-active: #131b2e;
+  --border: #1a2540;
+  --border-subtle: #111828;
+  --text-primary: #c8d4e8;
+  --text-secondary: #4a5a7a;
+  --text-muted: #2a3550;
+  --accent-cyan: #00c8e8;
+  --accent-teal: #00e0a8;
+  --accent-blue: #3a7bd5;
+  --positive: #00d4a0;
+  --negative: #e84060;
+  --badge-ascending-text: #00c87a;
+  --badge-ascending-bg: rgba(0, 200, 122, 0.12);
+  --badge-aligned-text: #6a7a9a;
+  --badge-aligned-bg: rgba(106, 122, 154, 0.12);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  background: var(--bg-root);
+  color: var(--text-primary);
+  font-family: 'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button, input {
+  font-family: inherit;
+}
