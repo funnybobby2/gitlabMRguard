@@ -54,16 +54,18 @@ export const fetchProjectData = createAsyncThunk<ProjectData, GitlabConfig>(
     'project/fetch',
     async ({ baseUrl, token, projectPath }) => {
         const monthStart = new Date()
-        monthStart.setDate(1)
+        monthStart.setDate(monthStart.getDate() - 30)
         monthStart.setHours(0, 0, 0, 0)
 
-        const [project, openMRs, monthMRs] = await Promise.all([
+        const [project, openMRs] = await Promise.all([
             getProject(baseUrl, token, projectPath),
             getOpenMRs(baseUrl, token, projectPath),
-            getMonthMRs(baseUrl, token, projectPath, monthStart.toISOString()),
         ])
 
-        const members = await getProjectMembers(baseUrl, token, project.id)
+        const [monthMRs, members] = await Promise.all([
+            getMonthMRs(baseUrl, token, project.id, monthStart.toISOString()),
+            getProjectMembers(baseUrl, token, project.id),
+        ])
 
         // --- Stats ---
         const mergedThisMonth = monthMRs.filter(mr => mr.state === 'merged')
@@ -75,15 +77,15 @@ export const fetchProjectData = createAsyncThunk<ProjectData, GitlabConfig>(
 
         // --- Avg time to merge ---
         const timesToMerge = mergedThisMonth
-            .filter(mr => mr.mergedAt)
-            .map(mr => new Date(mr.mergedAt!).getTime() - new Date(mr.createdAt).getTime())
+            .filter(mr => mr.merged_at)
+            .map(mr => new Date(mr.merged_at!).getTime() - new Date(mr.created_at).getTime())
         const avgTimeToMergeMs = timesToMerge.length > 0
             ? timesToMerge.reduce((a, b) => a + b, 0) / timesToMerge.length
             : -1
 
-        // --- Lines ---
-        const linesAdded = monthMRs.reduce((s, mr) => s + (mr.diffStatsSummary?.additions ?? 0), 0)
-        const linesDeleted = monthMRs.reduce((s, mr) => s + (mr.diffStatsSummary?.deletions ?? 0), 0)
+        // --- Lines (from open MRs via GraphQL, REST list doesn't include diff stats) ---
+        const linesAdded = openMRs.reduce((s, mr) => s + (mr.diffStatsSummary?.additions ?? 0), 0)
+        const linesDeleted = openMRs.reduce((s, mr) => s + (mr.diffStatsSummary?.deletions ?? 0), 0)
 
         // --- Warnings: open MRs that qualify ---
         const warnings: WarningEntry[] = openMRs
@@ -119,17 +121,15 @@ export const fetchProjectData = createAsyncThunk<ProjectData, GitlabConfig>(
             })
         }
 
-        const seen = new Set<number>()
-        for (const mr of [...monthMRs, ...openMRs]) {
-            if (seen.has(mr.iid)) continue
-            seen.add(mr.iid)
-            const u = mr.author.username
-            if (!memberMap.has(u)) {
-                memberMap.set(u, {
-                    id: mr.author.id,
-                    username: u,
-                    name: mr.author.name,
-                    avatarUrl: mr.author.avatarUrl || undefined,
+        // Pass 1 — monthMRs (REST) : comptages mrsAuthored + mrsMerged
+        for (const mr of monthMRs) {
+            const { username, name, avatar_url, id } = mr.author
+            if (!memberMap.has(username)) {
+                memberMap.set(username, {
+                    id: String(id),
+                    username,
+                    name,
+                    avatarUrl: avatar_url || undefined,
                     accessLevel: 0,
                     mrsAuthored: 0,
                     linesAdded: 0,
@@ -137,11 +137,30 @@ export const fetchProjectData = createAsyncThunk<ProjectData, GitlabConfig>(
                     mrsMerged: 0,
                 })
             }
-            const stat = memberMap.get(u)!
+            const stat = memberMap.get(username)!
             stat.mrsAuthored++
-            stat.linesAdded += mr.diffStatsSummary?.additions ?? 0
-            stat.linesDeleted += mr.diffStatsSummary?.deletions ?? 0
             if (mr.state === 'merged') stat.mrsMerged++
+        }
+
+        // Pass 2 — openMRs (GraphQL) : stats de lignes
+        for (const mr of openMRs) {
+            const { username, name, avatarUrl, id } = mr.author
+            if (!memberMap.has(username)) {
+                memberMap.set(username, {
+                    id,
+                    username,
+                    name,
+                    avatarUrl: avatarUrl || undefined,
+                    accessLevel: 0,
+                    mrsAuthored: 0,
+                    linesAdded: 0,
+                    linesDeleted: 0,
+                    mrsMerged: 0,
+                })
+            }
+            const stat = memberMap.get(username)!
+            stat.linesAdded  += mr.diffStatsSummary?.additions ?? 0
+            stat.linesDeleted += mr.diffStatsSummary?.deletions ?? 0
         }
 
         const membersList = [...memberMap.values()]

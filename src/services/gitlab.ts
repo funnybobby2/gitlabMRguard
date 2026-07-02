@@ -15,6 +15,15 @@ export interface GitlabMember {
     access_level: number
 }
 
+export interface GitlabMRRest {
+    iid: number
+    state: string
+    created_at: string
+    merged_at: string | null
+    author: { id: number; username: string; name: string; avatar_url: string }
+    changes_summary?: { additions: number; deletions: number }
+}
+
 export interface GqlMRNode {
     iid: number
     title: string
@@ -149,9 +158,17 @@ export async function getOpenMRs(baseUrl: string, token: string, projectPath: st
     )
 }
 
-export async function getMonthMRs(baseUrl: string, token: string, projectPath: string, createdAfter: string): Promise<GqlMRNode[]> {
-    return fetchAllGqlPages<GqlMRNode>(
-        baseUrl, token, MONTH_MRS_QUERY, { fullPath: projectPath, createdAfter },
-        (data) => (data as any).project.mergeRequests
-    )
+export async function getMonthMRs(baseUrl: string, token: string, projectId: number, createdAfter: string): Promise<GitlabMRRest[]> {
+    const all: GitlabMRRest[] = []
+    let page = 1
+    while (true) {
+        const batch = await restGet<GitlabMRRest[]>(
+            `${baseUrl}/api/v4/projects/${projectId}/merge_requests?state=all&created_after=${encodeURIComponent(createdAfter)}&per_page=100&page=${page}`,
+            token
+        )
+        all.push(...batch)
+        if (batch.length < 100) break
+        page++
+    }
+    return all
 }
