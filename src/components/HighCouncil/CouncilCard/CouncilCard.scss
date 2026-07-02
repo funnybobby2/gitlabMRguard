@@ -1,0 +1,116 @@
+.council-card {
+    flex: 0 0 320px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    padding: 20px 18px 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-4px);
+        border-color: var(--text-secondary);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    &__role {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        color: #e6b428;
+        text-transform: uppercase;
+        background: rgba(230, 180, 40, 0.1);
+        padding: 3px 10px;
+        border-radius: 20px;
+        border: 1px solid rgba(230, 180, 40, 0.25);
+        align-self: center;
+    }
+
+    &__avatar-wrapper {
+        padding: 3px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--glow, #3a7bd5), transparent);
+    }
+
+    &__avatar {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        background: var(--bg-sidebar) center/cover no-repeat;
+        border: 2px solid transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 18px color-mix(in srgb, var(--glow, #3a7bd5) 40%, transparent);
+    }
+
+    &__initials {
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        user-select: none;
+    }
+
+    &__identity {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        text-align: center;
+    }
+
+    &__name {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text-primary);
+        letter-spacing: 0.02em;
+    }
+
+    &__title {
+        font-size: 9.5px;
+        font-weight: 600;
+        letter-spacing: 0.18em;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+    }
+
+    &__divider {
+        width: 100%;
+        height: 1px;
+        background: var(--border-subtle);
+    }
+
+    &__stats {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    &__stat {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
+    &__stat-label {
+        font-size: 9.5px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+    }
+
+    &__stat-value {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text-primary);
+        letter-spacing: 0.04em;
+    }
+}

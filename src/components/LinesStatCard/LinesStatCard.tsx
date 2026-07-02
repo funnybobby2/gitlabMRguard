@@ -20,7 +20,6 @@ export default function LinesStatCard({ type, count }: Props) {
             <div className="lines-stat-card__body">
                 <p className="lines-stat-card__label">{t(`linesStatCard.${type}.label`)}</p>
                 <p className="lines-stat-card__value">
-                    <span className="lines-stat-card__prefix">{isAdded ? '+' : '-'}</span>
                     {count.toLocaleString()}
                 </p>
                 <p className="lines-stat-card__subtitle">{t(`linesStatCard.${type}.subtitle`)}</p>
