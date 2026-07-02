@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { useAppSelector } from '../../../store/hooks';
+import { useAppSelector, useAppDispatch } from '../../../store/hooks';
+import { triggerEmotion, initialState, EMOTION_DURATIONS, type EyeMode } from '../../../store/eyeSlice';
 import './EyeOfProvidence.scss';
+
+const PICKER_EMOTIONS = (Object.keys(initialState) as EyeMode[])
+    .map(mode => ({ mode, duration: EMOTION_DURATIONS[mode] }));
 
 const BLINK_DURATION = 4500;
 const randomDelay = () => 250 + Math.random() * 3750;
@@ -8,13 +12,27 @@ const randomDelay = () => 250 + Math.random() * 3750;
 type LookDir = 'left' | 'up' | 'down' | 'right' | null;
 
 export default function EyeOfProvidence() {
-    const { sharingan, suspicious, affected, addict, enervous, surprised, curiosity, hypnose, cyberpunk, predator, negative } = useAppSelector(s => s.eye);
+    const { sharingan, suspicious, affected, addict, enervous, surprised, paranoid, curiosity, hypnose, cyberpunk, predator, negative } = useAppSelector(s => s.eye);
+    const dispatch = useAppDispatch();
 
     const [isBlinking, setIsBlinking] = useState(false);
     const [lookDir, setLookDir] = useState<LookDir>(null);
     const [narrowed, setNarrowed] = useState(false);
     const [irisPos, setIrisPos] = useState({ x: 0, y: 0 });
+    const [pickerOpen, setPickerOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
+    const pickerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!pickerOpen) return;
+        function handleClickOutside(e: MouseEvent) {
+            if (pickerRef.current && !pickerRef.current.contains(e.target as Node)) {
+                setPickerOpen(false);
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [pickerOpen]);
 
     useEffect(() => {
         let timeout: ReturnType<typeof setTimeout>;
@@ -32,9 +50,7 @@ export default function EyeOfProvidence() {
     }, []);
 
     useEffect(() => {
-        if (!curiosity) {
-            return () => setIrisPos({ x: 0, y: 0 });
-        }
+        if (!curiosity) return;
 
         let ticking = false;
         const onMouseMove = (e: MouseEvent) => {
@@ -58,10 +74,7 @@ export default function EyeOfProvidence() {
         };
 
         window.addEventListener('mousemove', onMouseMove);
-        return () => {
-            window.removeEventListener('mousemove', onMouseMove);
-            setIrisPos({ x: 0, y: 0 });
-        };
+        return () => window.removeEventListener('mousemove', onMouseMove);
     }, [curiosity]);
 
     useEffect(() => {
@@ -84,8 +97,22 @@ export default function EyeOfProvidence() {
 
     return (
         <div className="pyramide" ref={containerRef}>
+            {pickerOpen && (
+                <div className="eye-picker" ref={pickerRef}>
+                    {PICKER_EMOTIONS.map(({ mode, duration }) => (
+                        <button
+                            key={mode}
+                            className="eye-picker__item"
+                            onClick={() => { dispatch(triggerEmotion(mode, duration, true)); setPickerOpen(false); }}
+                        >
+                            {mode}
+                        </button>
+                    ))}
+                </div>
+            )}
             <svg
-                style={{ '--iris-x': `${irisPos.x}px`, '--iris-y': `${irisPos.y}px` } as React.CSSProperties}
+                onClick={() => setPickerOpen(o => !o)}
+                style={{ '--iris-x': `${curiosity ? irisPos.x : 0}px`, '--iris-y': `${curiosity ? irisPos.y : 0}px` } as React.CSSProperties}
                 className={[
                 'eye',
                 isBlinking  && 'blinking',
@@ -96,6 +123,7 @@ export default function EyeOfProvidence() {
                 affected    && 'wrinkled-pupil',
                 enervous    && 'enervous',
                 surprised   && 'surprised',
+                paranoid    && 'paranoid',
                 hypnose     && 'hypnose',
                 cyberpunk   && 'cyberpunk',
                 predator    && 'predator',

@@ -18,7 +18,22 @@ export interface EyeState {
 
 export type EyeMode = keyof EyeState;
 
-const initialState: EyeState = {
+export const EMOTION_DURATIONS: Record<EyeMode, number> = {
+    addict:    5000,
+    affected:  5000,
+    curiosity: 15000,
+    cyberpunk: 10000,
+    enervous:  5000,
+    hypnose:   5000,
+    negative:  5000,
+    paranoid:  10000,
+    predator:  8000,
+    sharingan: 8000,
+    surprised: 8000,
+    suspicious: 8000,
+};
+
+export const initialState: EyeState = {
     addict:     false, // pupille dilatée
     affected:   false, // pupille qui tremble
     curiosity:  false, // suit la souris du regard
@@ -41,6 +56,10 @@ const eyeSlice = createSlice({
             const { mode, value } = action.payload;
             (Object.keys(initialState) as EyeMode[]).forEach(key => { state[key] = false; });
             state[mode] = value;
+            if (mode === 'paranoid' && value) {
+                state.suspicious = true;
+                state.surprised  = true;
+            }
         },
     },
 });
@@ -49,13 +68,13 @@ export const { setMode } = eyeSlice.actions;
 
 
 // Déclenche une émotion temporaire et la réinitialise après `duration` ms
-export const triggerEmotion = (mode: EyeMode, duration: number) => (dispatch: AppDispatch, getState: () => RootState) => {
-    // to not interrupt an ongoing emotion, we check if any emotion is active
-    const eye = getState().eye;
-    if (Object.values(eye).some(Boolean)) return;
+export const triggerEmotion = (mode: EyeMode, duration: number, force = false) => (dispatch: AppDispatch, getState: () => RootState) => {
+    if (!force && Object.values(getState().eye).some(Boolean)) return;
 
     dispatch(setMode({ mode, value: true }));
-    setTimeout(() => dispatch(setMode({ mode, value: false })), duration);
+    setTimeout(() => {
+        if (getState().eye[mode]) dispatch(setMode({ mode, value: false }));
+    }, duration);
 };
 
 export default eyeSlice.reducer;
