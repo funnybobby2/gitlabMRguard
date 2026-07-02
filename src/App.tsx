@@ -12,7 +12,6 @@ import Coven from './pages/Coven'
 import Archives from './pages/Archives'
 import Settings from './pages/Settings'
 import { useAppDispatch, useAppSelector } from './store/hooks'
-import { triggerSuspicious, triggerCuriosity, setMode } from './store/eyeSlice'
 import { fetchProjectData } from './store/projectSlice'
 import { useRandomEyeEffect } from './hooks/useRandomEyeEffect'
 import { useTheme } from './hooks/useTheme'
@@ -34,9 +33,9 @@ export default function App() {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const NAV_ITEMS = [
-    { id: 'prophecies', path: '/prophecies', label: t('nav.prophecies'), fullLabel: t('nav.prophecies_full'), icon: <FontAwesomeIcon icon={faScroll} />,     onNavigate: () => dispatch(triggerSuspicious()) },
-    { id: 'coven',      path: '/coven',      label: t('nav.coven'),      fullLabel: t('nav.coven_full'),       icon: <FontAwesomeIcon icon={faUsers} />,      onNavigate: () => dispatch(triggerCuriosity()) },
-    { id: 'archives',   path: '/archives',   label: t('nav.archives'),   fullLabel: t('nav.archives_full'),    icon: <FontAwesomeIcon icon={faBoxArchive} />, onNavigate: () => dispatch(setMode({ mode: 'sharingan', value: true })) },
+    { id: 'prophecies', path: '/prophecies', label: t('nav.prophecies'), fullLabel: t('nav.prophecies_full'), icon: <FontAwesomeIcon icon={faScroll} /> },
+    { id: 'coven',      path: '/coven',      label: t('nav.coven'),      fullLabel: t('nav.coven_full'),       icon: <FontAwesomeIcon icon={faUsers} /> },
+    { id: 'archives',   path: '/archives',   label: t('nav.archives'),   fullLabel: t('nav.archives_full'),    icon: <FontAwesomeIcon icon={faBoxArchive} /> },
   ]
 
   const activeItem = NAV_ITEMS.find(n => pathname.startsWith(n.path))
