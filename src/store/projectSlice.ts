@@ -57,12 +57,10 @@ export const fetchProjectData = createAsyncThunk<ProjectData, GitlabConfig>(
         monthStart.setDate(monthStart.getDate() - 30)
         monthStart.setHours(0, 0, 0, 0)
 
-        const [project, openMRs] = await Promise.all([
-            getProject(baseUrl, token, projectPath),
-            getOpenMRs(baseUrl, token, projectPath),
-        ])
+        const project = await getProject(baseUrl, token, projectPath)
 
-        const [monthMRs, members] = await Promise.all([
+        const [openMRs, monthMRs, members] = await Promise.all([
+            getOpenMRs(baseUrl, token, project.id),
             getMonthMRs(baseUrl, token, project.id, monthStart.toISOString()),
             getProjectMembers(baseUrl, token, project.id),
         ])
@@ -83,25 +81,23 @@ export const fetchProjectData = createAsyncThunk<ProjectData, GitlabConfig>(
             ? timesToMerge.reduce((a, b) => a + b, 0) / timesToMerge.length
             : -1
 
-        // --- Lines (from open MRs via GraphQL, REST list doesn't include diff stats) ---
-        const linesAdded = openMRs.reduce((s, mr) => s + (mr.diffStatsSummary?.additions ?? 0), 0)
-        const linesDeleted = openMRs.reduce((s, mr) => s + (mr.diffStatsSummary?.deletions ?? 0), 0)
+        // --- Lines (from open MRs) ---
+        const linesAdded = openMRs.reduce((s, mr) => s + mr.additions, 0)
+        const linesDeleted = openMRs.reduce((s, mr) => s + mr.deletions, 0)
 
         // --- Warnings: open MRs that qualify ---
         const warnings: WarningEntry[] = openMRs
             .filter(mr => {
-                const daysOld = (Date.now() - new Date(mr.createdAt).getTime()) / 86_400_000
-                const linesIn = mr.diffStatsSummary?.additions ?? 0
-                const approved = mr.approvedBy.nodes.length > 0
-                return daysOld > 3 || linesIn >= 2000 || !approved
+                const daysOld = (Date.now() - new Date(mr.created_at).getTime()) / 86_400_000
+                return daysOld > 3 || mr.additions >= 2000 || !mr.approved
             })
             .map(mr => ({
                 id: String(mr.iid),
                 author: mr.author.name,
-                date: mr.createdAt,
-                link: mr.webUrl,
-                added: mr.diffStatsSummary?.additions ?? 0,
-                deleted: mr.diffStatsSummary?.deletions ?? 0,
+                date: mr.created_at,
+                link: mr.web_url,
+                added: mr.additions,
+                deleted: mr.deletions,
             }))
 
         // --- Members stats ---
@@ -121,7 +117,7 @@ export const fetchProjectData = createAsyncThunk<ProjectData, GitlabConfig>(
             })
         }
 
-        // Pass 1 — monthMRs (REST) : comptages mrsAuthored + mrsMerged
+        // Pass 1 — monthMRs : comptages mrsAuthored + mrsMerged
         for (const mr of monthMRs) {
             const { username, name, avatar_url, id } = mr.author
             if (!memberMap.has(username)) {
@@ -142,15 +138,15 @@ export const fetchProjectData = createAsyncThunk<ProjectData, GitlabConfig>(
             if (mr.state === 'merged') stat.mrsMerged++
         }
 
-        // Pass 2 — openMRs (GraphQL) : stats de lignes
+        // Pass 2 — openMRs : stats de lignes
         for (const mr of openMRs) {
-            const { username, name, avatarUrl, id } = mr.author
+            const { username, name, avatar_url, id } = mr.author
             if (!memberMap.has(username)) {
                 memberMap.set(username, {
-                    id,
+                    id: String(id),
                     username,
                     name,
-                    avatarUrl: avatarUrl || undefined,
+                    avatarUrl: avatar_url || undefined,
                     accessLevel: 0,
                     mrsAuthored: 0,
                     linesAdded: 0,
@@ -159,8 +155,8 @@ export const fetchProjectData = createAsyncThunk<ProjectData, GitlabConfig>(
                 })
             }
             const stat = memberMap.get(username)!
-            stat.linesAdded  += mr.diffStatsSummary?.additions ?? 0
-            stat.linesDeleted += mr.diffStatsSummary?.deletions ?? 0
+            stat.linesAdded  += mr.additions
+            stat.linesDeleted += mr.deletions
         }
 
         const membersList = [...memberMap.values()]
