@@ -33,6 +33,17 @@ export interface GitlabOpenMR extends GitlabMRRest {
 
 // --- Internal helpers ---
 
+function parseDiffStats(changes: Array<{ diff: string }>): { additions: number; deletions: number } {
+    let additions = 0, deletions = 0
+    for (const { diff } of changes) {
+        for (const line of diff.split('\n')) {
+            if (line.startsWith('+') && !line.startsWith('+++')) additions++
+            else if (line.startsWith('-') && !line.startsWith('---')) deletions++
+        }
+    }
+    return { additions, deletions }
+}
+
 function buildHeaders(token: string): HeadersInit {
     return { 'PRIVATE-TOKEN': token }
 }
@@ -83,21 +94,22 @@ export async function getOpenMRs(baseUrl: string, token: string, projectId: numb
 
     // 2. Enrich each MR with approvals and diff stats in parallel
     return Promise.all(all.map(async (mr) => {
-        const [approvals, details] = await Promise.all([
+        const [approvals, changes] = await Promise.all([
             restGet<{ approved: boolean }>(
                 `${baseUrl}/api/v4/projects/${projectId}/merge_requests/${mr.iid}/approvals`,
                 token
             ).catch(() => ({ approved: false })),
-            restGet<{ diff_stats?: { additions: number; deletions: number } }>(
-                `${baseUrl}/api/v4/projects/${projectId}/merge_requests/${mr.iid}`,
+            restGet<{ diff_stats?: { additions: number; deletions: number }; changes?: Array<{ diff: string }> }>(
+                `${baseUrl}/api/v4/projects/${projectId}/merge_requests/${mr.iid}/changes`,
                 token
-            ).catch(() => ({ diff_stats: undefined })),
+            ).catch(() => ({ diff_stats: undefined, changes: [] })),
         ])
+        const diffStats = changes.diff_stats ?? parseDiffStats(changes.changes ?? [])
         return {
             ...mr,
             approved: approvals.approved,
-            additions: details.diff_stats?.additions ?? 0,
-            deletions: details.diff_stats?.deletions ?? 0,
+            additions: diffStats.additions,
+            deletions: diffStats.deletions,
         }
     }))
 }

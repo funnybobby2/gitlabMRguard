@@ -39,7 +39,7 @@ export default function ProphecyBanner({ title, rate, onSummonReviewers, onViewS
                 </svg>
                 <div className="prophecy-banner__circle-label">
                     <span className="prophecy-banner__circle-text">{t('prophecyBanner.mergeSuccess')}</span>
-                    <span className="prophecy-banner__circle-value">{rate}%</span>
+                    <span className="prophecy-banner__circle-value">{+rate.toFixed(2)}%</span>
                 </div>
             </div>
 
