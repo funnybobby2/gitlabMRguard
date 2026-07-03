@@ -16,7 +16,7 @@ function formatDuration(ms: number): string {
 
 export default function Prophecies() {
     const { t } = useTranslation()
-    const { data, status } = useAppSelector(s => s.project)
+    const { data } = useAppSelector(s => s.project)
 
     const stats    = data?.stats
     const warnings = data?.warnings.map(w => ({ ...w, date: new Date(w.date) })) ?? []
@@ -36,7 +36,7 @@ export default function Prophecies() {
                 <div className="prophecies-left">
                     <ProphecyBanner
                         title={data ? data.projectName : t('prophecyBanner.mergeSuccess')}
-                        rate={stats?.mergeRate ?? 0}
+                        rate={(stats?.mergeRate ?? 0) * 100}
                     />
                     <div className="prophecies-stats-wrapper">
                         <div className="prophecies-stats">

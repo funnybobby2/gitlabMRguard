@@ -68,9 +68,11 @@ export const fetchProjectData = createAsyncThunk<ProjectData, GitlabConfig>(
         // --- Stats ---
         const mergedThisMonth = monthMRs.filter(mr => mr.state === 'merged')
         const closedThisMonth = monthMRs.filter(mr => mr.state === 'closed')
+        const openedThisMonth = monthMRs.filter(mr => mr.state === 'opened')
         const total = monthMRs.length
         const merged = mergedThisMonth.length
         const closed = closedThisMonth.length
+        const opened = openedThisMonth.length
         const mergeRate = total > 0 ? merged / total : 0
 
         // --- Avg time to merge ---
@@ -166,7 +168,7 @@ export const fetchProjectData = createAsyncThunk<ProjectData, GitlabConfig>(
         return {
             projectId: project.id,
             projectName: project.name,
-            stats: { total, merged, opened: openMRs.length, closed, mergeRate, avgTimeToMergeMs, linesAdded, linesDeleted },
+            stats: { total, merged, opened, closed, mergeRate, avgTimeToMergeMs, linesAdded, linesDeleted },
             warnings,
             members: membersList,
         }
