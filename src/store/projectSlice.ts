@@ -60,8 +60,8 @@ export const fetchProjectData = createAsyncThunk<ProjectData, GitlabConfig>(
         const project = await getProject(baseUrl, token, projectPath)
 
         const [openMRs, monthMRs, members] = await Promise.all([
-            getOpenMRs(baseUrl, token, project.id),
-            getMonthMRs(baseUrl, token, project.id, monthStart.toISOString()),
+            getOpenMRs(baseUrl, token, project.id).catch(() => []),
+            getMonthMRs(baseUrl, token, project.id, monthStart.toISOString()).catch(() => []),
             getProjectMembers(baseUrl, token, project.id),
         ])
 
@@ -160,7 +160,7 @@ export const fetchProjectData = createAsyncThunk<ProjectData, GitlabConfig>(
         }
 
         const membersList = [...memberMap.values()]
-            .filter(m => m.mrsAuthored > 0 || m.accessLevel >= 40)
+            .filter(m => m.accessLevel >= 50)
             .sort((a, b) => b.mrsAuthored - a.mrsAuthored)
 
         return {
