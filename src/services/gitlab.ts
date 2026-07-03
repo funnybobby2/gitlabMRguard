@@ -87,11 +87,11 @@ export async function getOpenMRs(baseUrl: string, token: string, projectId: numb
             restGet<{ approved: boolean }>(
                 `${baseUrl}/api/v4/projects/${projectId}/merge_requests/${mr.iid}/approvals`,
                 token
-            ),
+            ).catch(() => ({ approved: false })),
             restGet<{ diff_stats?: { additions: number; deletions: number } }>(
                 `${baseUrl}/api/v4/projects/${projectId}/merge_requests/${mr.iid}`,
                 token
-            ),
+            ).catch(() => ({ diff_stats: undefined })),
         ])
         return {
             ...mr,
