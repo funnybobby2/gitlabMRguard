@@ -114,6 +114,14 @@ export async function getOpenMRs(baseUrl: string, token: string, projectId: numb
     }))
 }
 
+export async function getMRFirstNoteDate(baseUrl: string, token: string, projectId: number, mrIid: number): Promise<string | null> {
+    const notes = await restGet<Array<{ system: boolean; created_at: string }>>(
+        `${baseUrl}/api/v4/projects/${projectId}/merge_requests/${mrIid}/notes?sort=asc&order_by=created_at&per_page=20`,
+        token
+    ).catch(() => [] as Array<{ system: boolean; created_at: string }>)
+    return notes.find(n => !n.system)?.created_at ?? null
+}
+
 export async function getMonthMRs(baseUrl: string, token: string, projectId: number, createdAfter: string): Promise<GitlabMRRest[]> {
     const all: GitlabMRRest[] = []
     let page = 1

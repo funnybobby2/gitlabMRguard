@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getProject, getProjectMembers, getOpenMRs, getMonthMRs } from '../services/gitlab'
+import { getProject, getProjectMembers, getOpenMRs, getMonthMRs, getMRFirstNoteDate } from '../services/gitlab'
 import type { GitlabConfig } from './configSlice'
 
 // --- Exported data types (used by pages) ---
@@ -34,8 +34,9 @@ export interface ProjectData {
         merged: number
         opened: number
         closed: number
-        mergeRate: number        // 0–1
-        avgTimeToMergeMs: number // -1 = no data
+        mergeRate: number              // 0–1
+        avgTimeToMergeMs: number       // -1 = no data
+        avgTimeToFirstReviewMs: number // -1 = no data
         linesAdded: number
         linesDeleted: number
     }
@@ -82,6 +83,24 @@ export const fetchProjectData = createAsyncThunk<ProjectData, GitlabConfig>(
             .map(mr => new Date(mr.merged_at!).getTime() - new Date(mr.created_at).getTime())
         const avgTimeToMergeMs = timesToMerge.length > 0
             ? timesToMerge.reduce((a, b) => a + b, 0) / timesToMerge.length
+            : -1
+
+        // --- Avg time to first review (first non-system note on merged MRs) ---
+        const firstNoteDates = await Promise.all(
+            mergedThisMonth.map(mr =>
+                getMRFirstNoteDate(baseUrl, token, project.id, mr.iid).catch(() => null)
+            )
+        )
+        const timesToFirstReview = mergedThisMonth
+            .map((mr, i) => {
+                const noteDate = firstNoteDates[i]
+                if (!noteDate) return null
+                const delta = new Date(noteDate).getTime() - new Date(mr.created_at).getTime()
+                return delta > 0 ? delta : null
+            })
+            .filter((t): t is number => t !== null)
+        const avgTimeToFirstReviewMs = timesToFirstReview.length > 0
+            ? timesToFirstReview.reduce((a, b) => a + b, 0) / timesToFirstReview.length
             : -1
 
         // --- Lines (from open MRs) ---
@@ -170,7 +189,7 @@ export const fetchProjectData = createAsyncThunk<ProjectData, GitlabConfig>(
         return {
             projectId: project.id,
             projectName: project.name,
-            stats: { total, merged, opened, closed, mergeRate, avgTimeToMergeMs, linesAdded, linesDeleted },
+            stats: { total, merged, opened, closed, mergeRate, avgTimeToMergeMs, avgTimeToFirstReviewMs, linesAdded, linesDeleted },
             warnings,
             members: membersList,
         }
