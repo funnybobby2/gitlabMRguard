@@ -6,6 +6,7 @@ import type { GitlabConfig } from './configSlice'
 
 export interface WarningEntry {
     id: string
+    title: string
     author: string
     date: string   // ISO string — convert to Date when reading
     link: string
@@ -95,6 +96,7 @@ export const fetchProjectData = createAsyncThunk<ProjectData, GitlabConfig>(
             })
             .map(mr => ({
                 id: String(mr.iid),
+                title: mr.title,
                 author: mr.author.name,
                 date: mr.created_at,
                 link: mr.web_url,

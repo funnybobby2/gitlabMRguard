@@ -14,6 +14,7 @@ export type WarningCategory = 'abandoned' | 'unsanctified' | 'chaos'
 
 export type WarningItemProps = {
     id: string
+    title: string
     author: string
     date: Date
     link: string
@@ -35,11 +36,6 @@ function getCategory(added: number, date: Date): WarningCategory {
     return 'unsanctified'
 }
 
-function getMoons(date: Date): number {
-    const diffDays = Math.floor((Date.now() - date.getTime()) / 86400000)
-    return Math.max(1, Math.floor(diffDays / 30))
-}
-
 function getRelativeTime(date: Date): string {
     const diffMs   = Date.now() - date.getTime()
     const diffMins = Math.floor(diffMs / 60000)
@@ -51,10 +47,10 @@ function getRelativeTime(date: Date): string {
     return `${Math.floor(diffDays / 30)}mo`
 }
 
-export default function WarningItem({ id, author, date, link, added, deleted, onExorcise }: WarningItemProps) {
+export default function WarningItem({ id, title, author, date, link, added, deleted, onExorcise }: WarningItemProps) {
     const { t } = useTranslation()
     const category = getCategory(added, date)
-    const moons    = getMoons(date)
+    const moons    = getRelativeTime(date)
 
     return (
         <div className={`warning-item warning-item--${category}`}>
@@ -63,7 +59,10 @@ export default function WarningItem({ id, author, date, link, added, deleted, on
             </div>
 
             <div className="warning-item__body">
-                <span className="warning-item__id">{id}</span>
+                <div className="warning-item__header">
+                    <span className="warning-item__id">#{id}</span>
+                    <span className="warning-item__title">{title}</span>
+                </div>
 
                 <p className="warning-item__desc">
                     {category === 'abandoned'    && t('warningItem.abandoned',    { moons })}

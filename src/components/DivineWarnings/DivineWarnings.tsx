@@ -6,6 +6,7 @@ import './DivineWarnings.scss'
 
 export type Warning = {
     id: string
+    title: string
     author: string
     date: Date
     link: string
