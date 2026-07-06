@@ -1,4 +1,5 @@
 .council-card {
+    position: relative;
     flex: 0 0 320px;
     background: var(--bg-card);
     border: 1px solid var(--border-subtle);
@@ -16,6 +17,40 @@
         transform: translateY(-4px);
         border-color: var(--text-secondary);
         box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    &--selected {
+        border-color: color-mix(in srgb, var(--glow, #e6b428) 60%, transparent);
+        box-shadow: 0 0 0 1px color-mix(in srgb, var(--glow, #e6b428) 30%, transparent);
+    }
+
+    &__toggle {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        border: 1px solid var(--border-subtle);
+        background: var(--bg-sidebar);
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 9px;
+        transition: background 0.15s, border-color 0.15s, color 0.15s;
+
+        &:hover {
+            border-color: var(--text-secondary);
+            color: var(--text-primary);
+        }
+
+        &--active {
+            background: color-mix(in srgb, var(--glow, #e6b428) 15%, transparent);
+            border-color: color-mix(in srgb, var(--glow, #e6b428) 60%, transparent);
+            color: var(--glow, #e6b428);
+        }
     }
 
     &__role {

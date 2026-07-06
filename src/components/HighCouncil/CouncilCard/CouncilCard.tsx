@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus, faCheck, faXmark } from '@fortawesome/free-solid-svg-icons'
 import './CouncilCard.scss'
 
 export type CouncilMember = {
@@ -13,20 +15,33 @@ export type CouncilMember = {
 
 type Props = {
     member: CouncilMember
+    selected?: boolean
+    filterActive?: boolean
+    onToggle?: () => void
 }
 
-export default function CouncilCard({ member: m }: Props) {
+export default function CouncilCard({ member: m, selected = false, filterActive = false, onToggle }: Props) {
+    const icon = filterActive ? faXmark : selected ? faCheck : faPlus
+
     return (
-        <div className="council-card">
+        <div
+            className={`council-card${selected ? ' council-card--selected' : ''}`}
+            style={{ '--glow': m.glowColor } as React.CSSProperties}
+        >
+            <button
+                className={`council-card__toggle${selected ? ' council-card__toggle--active' : ''}`}
+                onClick={onToggle}
+                title={filterActive ? 'Retirer de la sélection' : selected ? 'Désélectionner' : 'Ajouter à la sélection'}
+            >
+                <FontAwesomeIcon icon={icon} />
+            </button>
+
             <span className="council-card__role">{m.role}</span>
 
             <div className="council-card__avatar-wrapper">
                 <div
                     className="council-card__avatar"
-                    style={{
-                        backgroundImage: m.avatar ? `url(${m.avatar})` : undefined,
-                        '--glow': m.glowColor,
-                    } as React.CSSProperties}
+                    style={{ backgroundImage: m.avatar ? `url(${m.avatar})` : undefined }}
                 >
                     {!m.avatar && (
                         <span className="council-card__initials" style={{ color: m.glowColor }}>

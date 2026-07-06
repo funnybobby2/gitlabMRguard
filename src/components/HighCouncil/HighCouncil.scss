@@ -9,6 +9,64 @@
         gap: 6px;
     }
 
+    &__title-row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+        padding-top: 4px;
+    }
+
+    &__btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 12px;
+        border-radius: 6px;
+        border: 1px solid var(--border-subtle);
+        background: var(--bg-sidebar);
+        color: var(--text-secondary);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+        transition: border-color 0.15s, color 0.15s, background 0.15s;
+        white-space: nowrap;
+
+        &:hover {
+            border-color: var(--text-secondary);
+            color: var(--text-primary);
+        }
+
+        &--primary {
+            background: rgba(230, 180, 40, 0.1);
+            border-color: rgba(230, 180, 40, 0.4);
+            color: #e6b428;
+
+            &:hover {
+                background: rgba(230, 180, 40, 0.18);
+                border-color: #e6b428;
+                color: #e6b428;
+            }
+        }
+
+        &--ghost {
+            background: transparent;
+
+            &:hover {
+                border-color: #e84060;
+                color: #e84060;
+            }
+        }
+    }
+
     &__title {
         font-size: 22px;
         font-weight: 700;

@@ -183,7 +183,7 @@ export const fetchProjectData = createAsyncThunk<ProjectData, GitlabConfig>(
         }
 
         const membersList = [...memberMap.values()]
-            .filter(m => m.accessLevel >= 50)
+            .filter(m => m.accessLevel >= 30)
             .sort((a, b) => b.mrsAuthored - a.mrsAuthored)
 
         return {
